@@ -1,17 +1,26 @@
+import 'dart:convert';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:irisgoldproject/widgets/NavigationDrawer.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:http/http.dart';
+import 'dart:math' as math;
 
 void main() => runApp(MaterialApp(initialRoute: '/', routes: {
-      '/': (context) => WelcomeScreen(),
+      '/': (context) => MyHomeScreen(),
       '/home': (context) => MyHomeScreen(),
       '/register_welcome_screen': (context) => RegisterWelcomeScreen(),
       '/word_seed_check_screen': (context) => WordSeedCheckScreen(),
       '/word_seed_show_screen': (context) => WordSeedShowScreen(),
+      '/conversion_screen': (context) => ConversionScreen(),
     }));
 
-class MyHomeScreen extends StatelessWidget {
+class MyHomeScreen extends StatefulWidget {
+  @override
+  _MyHomeScreenState createState() => _MyHomeScreenState();
+}
+
+class _MyHomeScreenState extends State<MyHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +39,6 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawer(),
       body: Center(
         child: Container(
             child: Column(
@@ -39,7 +47,7 @@ class WelcomeScreen extends StatelessWidget {
             Image(
               width: 300,
               height: 275,
-              image: AssetImage('assets/1irstgold.png'),
+              image: AssetImage('assets/images/1irstgold.png'),
             ),
             Center(
                 child: Text(
@@ -68,7 +76,8 @@ class WelcomeScreen extends StatelessWidget {
               ),
               color: Color.fromRGBO(191, 144, 0, 1),
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/register_welcome_screen');
+                Navigator.pushReplacementNamed(
+                    context, '/register_welcome_screen');
               },
             )
           ],
@@ -83,7 +92,6 @@ class RegisterWelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawer(),
       body: Center(
         child: Container(
             child: Column(
@@ -94,7 +102,7 @@ class RegisterWelcomeScreen extends StatelessWidget {
               child: Image(
                 width: 250,
                 height: 230,
-                image: AssetImage('assets/1irstgold.png'),
+                image: AssetImage('assets/images/1irstgold.png'),
               ),
             ),
             Padding(
@@ -184,7 +192,6 @@ class _WordSeedShowScreenState extends State<WordSeedShowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawer(),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -195,7 +202,7 @@ class _WordSeedShowScreenState extends State<WordSeedShowScreen> {
                 child: Image(
                   width: 250,
                   height: 140,
-                  image: AssetImage('assets/1irstgold.png'),
+                  image: AssetImage('assets/images/1irstgold.png'),
                 ),
               ),
               Card(
@@ -264,15 +271,12 @@ class WordSeedCheckScreen extends StatefulWidget {
 }
 
 class _WordSeedCheckScreenState extends State<WordSeedCheckScreen> {
-  List<String> seedWords = [
-
-  ];
+  List<String> seedWords = [];
   final newTextAdded = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawer(),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -283,7 +287,7 @@ class _WordSeedCheckScreenState extends State<WordSeedCheckScreen> {
                 child: Image(
                   width: 250,
                   height: 140,
-                  image: AssetImage('assets/1irstgold.png'),
+                  image: AssetImage('assets/images/1irstgold.png'),
                 ),
               ),
               Card(
@@ -376,5 +380,328 @@ class _WordSeedCheckScreenState extends State<WordSeedCheckScreen> {
       ),
       backgroundColor: Color.fromARGB(0, 0, 0, 0),
     );
+  }
+}
+
+class ConversionScreen extends StatefulWidget {
+  @override
+  _ConversionScreenState createState() => _ConversionScreenState();
+}
+
+class _ConversionScreenState extends State<ConversionScreen> {
+  final topEditText = TextEditingController();
+  final bottomEditText = TextEditingController();
+  bool isGoldTop = true;
+  bool isLoading = false;
+  double goldToUsdtValue = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+      isLoading = true;
+    });
+    getConversionVariable('1GOLD', 'USDT', '0');
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: !isLoading
+            ? SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 350,
+                      width: 500,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          color: Colors.grey[800],
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Stack(
+                              children: <Widget>[
+                                Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  height: 150,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[800]),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              'You Pay',
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      191, 144, 0, 1),
+                                                  fontSize: 15),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      width: 200,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: TextField(
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          style: TextStyle(
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      191,
+                                                                      144,
+                                                                      0,
+                                                                      1)),
+                                                          onSubmitted:
+                                                              (value) =>
+                                                                  setState(() {
+                                                            isLoading = true;
+                                                            getConversionVariable(
+                                                                isGoldTop
+                                                                    ? '1GOLD'
+                                                                    : 'USDT',
+                                                                !isGoldTop
+                                                                    ? '1GOLD'
+                                                                    : 'USDT',
+                                                                topEditText
+                                                                    .text);
+                                                          }),
+                                                          decoration: new InputDecoration
+                                                                  .collapsed(
+                                                              hintText: isGoldTop
+                                                                  ? 'Enter 1IristGold'
+                                                                  : 'Enter Tether USD',
+                                                              fillColor: Color
+                                                                  .fromRGBO(
+                                                                      191,
+                                                                      144,
+                                                                      0,
+                                                                      1)),
+                                                          controller:
+                                                              topEditText,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              isGoldTop
+                                                  ? 'Balance 0 1GOLD'
+                                                  : 'Balance 0 USDT',
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      191, 144, 0, 1),
+                                                  fontSize: 15),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  height: 150,
+                                  left: 0,
+                                  right: 0,
+                                  top: 150,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[800]),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              'You Get',
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      191, 144, 0, 1),
+                                                  fontSize: 15),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    width: 200,
+                                                    child: TextField(
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      onSubmitted: (value) =>
+                                                          setState(() {
+                                                        isLoading = true;
+                                                        getConversionVariable(
+                                                            !isGoldTop
+                                                                ? '1GOLD'
+                                                                : 'USDT',
+                                                            isGoldTop
+                                                                ? '1GOLD'
+                                                                : 'USDT',
+                                                            bottomEditText
+                                                                .text);
+                                                      }),
+                                                      decoration: new InputDecoration
+                                                              .collapsed(
+                                                          hintText: !isGoldTop
+                                                              ? 'Enter 1IristGold'
+                                                              : 'Enter Tether USD'),
+                                                      controller:
+                                                          bottomEditText,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Text(
+                                              !isGoldTop
+                                                  ? 'Balance 0 1GOLD'
+                                                  : 'Balance 0 USDT',
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      191, 144, 0, 1),
+                                                  fontSize: 15),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  height: 30,
+                                  top: 130,
+                                  right: 30,
+                                  child: FloatingActionButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        topEditText.text = '';
+                                        bottomEditText.text = '';
+                                        isGoldTop = !isGoldTop;
+                                      });
+                                    },
+                                    splashColor: Color.fromRGBO(191, 144, 0, 1),
+                                    backgroundColor: Colors.black,
+                                    child: Transform.rotate(
+                                      angle: 90 * math.pi / 180,
+                                      child: Icon(
+                                        Icons.compare_arrows,
+                                        color: Color.fromRGBO(191, 144, 0, 1),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(''),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      "1 1IRISTGOLD ~ " + goldToUsdtValue.toString() + ' USDT',
+                      style: TextStyle(
+                        color: Color.fromRGBO(191, 144, 0, 1),
+                      ),
+                    ),
+                    FlatButton(
+                      color: Color.fromRGBO(191, 144, 0, 1),
+                      onPressed: () {},
+                      child: Text("Next"),
+                    )
+                  ],
+                ),
+              )
+            : SpinKitCircle(
+                color: Colors.white,
+                size: 50.0,
+              ),
+      ),
+      backgroundColor: Color.fromARGB(0, 0, 0, 0),
+    );
+  }
+
+  void getConversionVariable(fromSymbol, toSymbol, amount) async {
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'X-CMC_PRO_API_KEY': '07467c82-b1d6-4ddc-907a-b5e821602fe0'
+    };
+    String url = '';
+    if (amount == '0')
+      url =
+          'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount=' +
+              '1' +
+              '&symbol=' +
+              fromSymbol +
+              '&convert=' +
+              toSymbol;
+    else {
+      url =
+          'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount=' +
+              amount +
+              '&symbol=' +
+              fromSymbol +
+              '&convert=' +
+              toSymbol;
+    }
+    Response response = await get(url, headers: requestHeaders);
+    final Map parsed = json.decode(response.body);
+    print(parsed);
+    setState(() {
+      if (amount == '0') {
+        goldToUsdtValue = parsed['data']['quote']['USDT']['price'];
+        print(goldToUsdtValue);
+      } else {
+        if (isGoldTop) {
+          if (topEditText.text == amount) {
+            bottomEditText.text =
+                parsed['data']['quote']['USDT']['price'].toString();
+          } else {
+            topEditText.text =
+                parsed['data']['quote']['1GOLD']['price'].toString();
+          }
+        } else {
+          if (topEditText.text == amount) {
+            bottomEditText.text =
+                parsed['data']['quote']['1GOLD']['price'].toString();
+          } else {
+            topEditText.text =
+                parsed['data']['quote']['USDT']['price'].toString();
+          }
+        }
+
+      }
+      isLoading = false;
+      print("loading" + isLoading.toString());
+    });
   }
 }
