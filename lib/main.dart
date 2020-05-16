@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 import 'dart:math' as math;
 
 void main() => runApp(MaterialApp(initialRoute: '/', routes: {
-      '/': (context) => MyHomeScreen(),
+      '/': (context) => WelcomeScreen(),
       '/home': (context) => MyHomeScreen(),
       '/register_welcome_screen': (context) => RegisterWelcomeScreen(),
       '/word_seed_check_screen': (context) => WordSeedCheckScreen(),
