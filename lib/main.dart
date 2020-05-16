@@ -456,11 +456,11 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                                 child: Row(
                                                   children: <Widget>[
                                                     SizedBox(
-                                                      width: 200,
+                                                      width: 150,
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
+                                                            EdgeInsets
+                                                                .fromLTRB(10, 5, 0, 5),
                                                         child: TextField(
                                                           keyboardType:
                                                               TextInputType
@@ -502,6 +502,13 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                                         ),
                                                       ),
                                                     ),
+                                                    Image(
+                                                      width: !isGoldTop?40:50,
+                                                        image:AssetImage(!isGoldTop?'assets/images/tether.png':'assets/images/1irstgold.png')
+                                                    )
+                                                    ,Text(
+                                                        !isGoldTop?'Tether':'1Gold'
+                                                    )
                                                   ],
                                                 ),
                                               ),
@@ -552,7 +559,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                               child: Row(
                                                 children: <Widget>[
                                                   SizedBox(
-                                                    width: 200,
+                                                    width: 150,
                                                     child: TextField(
                                                       keyboardType:
                                                           TextInputType.number,
@@ -570,14 +577,27 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                                                 .text);
                                                       }),
                                                       decoration: new InputDecoration
-                                                              .collapsed(
-                                                          hintText: !isGoldTop
+                                                          .collapsed(
+                                                          hintText: isGoldTop
                                                               ? 'Enter 1IristGold'
-                                                              : 'Enter Tether USD'),
+                                                              : 'Enter Tether USD',
+                                                          fillColor: Color
+                                                              .fromRGBO(
+                                                              191,
+                                                              144,
+                                                              0,
+                                                              1)),
                                                       controller:
                                                           bottomEditText,
                                                     ),
                                                   ),
+                                                  Image(
+                                                    width: isGoldTop?40:50,
+                                                    image:AssetImage(isGoldTop?'assets/images/tether.png':'assets/images/1goldsmall.png')
+                                                  )
+                                                  ,Text(
+                                                      isGoldTop?'Tether':'1Gold'
+                                                  )
                                                 ],
                                               ),
                                             ),
