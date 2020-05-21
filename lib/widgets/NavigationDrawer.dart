@@ -122,7 +122,10 @@ class NavigationDrawer extends StatelessWidget {
                   style: TextStyle(
                       color: Color.fromRGBO(191, 144, 0, 1),
                       fontWeight: FontWeight.bold)),
-              onTap: () => {Navigator.of(context).pop()},
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/about_screen');
+                },
             ),
             ListTile(
               leading: Icon(
@@ -133,7 +136,9 @@ class NavigationDrawer extends StatelessWidget {
                   style: TextStyle(
                       color: Color.fromRGBO(191, 144, 0, 1),
                       fontWeight: FontWeight.bold)),
-              onTap: () => {Navigator.of(context).pop()},
+              onTap: (){
+                Navigator.of(context).pop();
+                },
             ),
             ListTile(
               leading: Icon(

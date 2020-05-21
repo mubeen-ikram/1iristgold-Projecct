@@ -10,13 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet_core/wallet_core.dart';
 
 void main() => runApp(MaterialApp(initialRoute: '/', routes: {
-      '/': (context) => WelcomeScreen(),
+      '/': (context) => AboutScreen(),
       '/welcome_screen': (context) => WelcomeScreen(),
       '/home': (context) => MyHomeScreen(),
       '/register_welcome_screen': (context) => RegisterWelcomeScreen(),
       '/word_seed_check_screen': (context) => WordSeedCheckScreen(),
       '/word_seed_show_screen': (context) => WordSeedShowScreen(),
       '/conversion_screen': (context) => ConversionScreen(),
+      '/about_screen': (context) => AboutScreen(),
     }));
 
 class MyHomeScreen extends StatefulWidget {
@@ -25,14 +26,12 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
-
   Future<void> checkPrefrence() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String counter =prefs.getString('key') ?? '';
+    String counter = prefs.getString('key') ?? '';
     print(counter);
-    if (counter==''){
+    if (counter == '') {
       setState(() {
-        print('going to welcome screen');
         Navigator.pushReplacementNamed(context, '/welcome_screen');
       });
     }
@@ -72,10 +71,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     checkPrefrence();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Center(
         child: Container(
@@ -127,9 +124,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Future<void> checkPrefrence() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String counter =prefs.getString('key') ?? '';
-    print(counter+"welcome");
-    if (counter!=''){
+    String counter = prefs.getString('key') ?? '';
+    print(counter + "welcome");
+    if (counter != '') {
       setState(() {
         Navigator.pushReplacementNamed(context, '/home');
       });
@@ -223,10 +220,9 @@ class WordSeedShowScreen extends StatefulWidget {
 }
 
 class _WordSeedShowScreenState extends State<WordSeedShowScreen> {
-  bool isLoaded=false;
-  List<String> seedWords = [
+  bool isLoaded = false;
+  List<String> seedWords = [];
 
-  ];
   @override
   void initState() {
     // TODO: implement initState
@@ -234,97 +230,99 @@ class _WordSeedShowScreenState extends State<WordSeedShowScreen> {
     setHDWallet();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-    return !isLoaded? SpinKitCircle(
-      color: Colors.white,
-      size: 50.0,
-    ):
-    Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-              child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topRight,
-                child: Image(
-                  width: 250,
-                  height: 160,
-                  image: AssetImage('assets/images/1irstgold.png'),
-                ),
-              ),
-              Card(
+    return !isLoaded
+        ? SpinKitCircle(
+            color: Colors.white,
+            size: 50.0,
+          )
+        : Scaffold(
+            body: SingleChildScrollView(
+              child: Center(
                 child: Container(
-                  child: SizedBox(
-                    height: 220,
-                    width: 350,
-                    child: Wrap(
-                      direction: Axis.horizontal,
-                      children: seedWords
-                          .map((e) => Padding(
-                                padding: const EdgeInsets.fromLTRB(2, 1, 2, 1),
-                                child: FlatButton(
-                                    onPressed: () {},
-                                    child: Column(children: [
-                                      Text(
-                                        (seedWords.indexOf(e) + 1).toString() +
-                                            "-" +
-                                            e,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          wordSpacing: 1,
-                                        ),
-                                      ),
-                                    ])),
-                              ))
-                          .toList(),
+                    child: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Image(
+                        width: 250,
+                        height: 160,
+                        image: AssetImage('assets/images/1irstgold.png'),
+                      ),
                     ),
-                  ),
-                ),
-                color: Color.fromRGBO(191, 144, 0, 1),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                child: Center(
-                    child: Text(
-                  'Please secure your password phrase of the 12 words above before proceeding.\nKeep them safe from access by thrid party.If you IGNORE this, You can LOSE all assets from your wallet',
-                  style: TextStyle(
-                      color: Color.fromRGBO(191, 144, 0, 1), fontSize: 15),
-                  textAlign: TextAlign.center,
+                    Card(
+                      child: Container(
+                        child: SizedBox(
+                          height: 220,
+                          width: 350,
+                          child: Wrap(
+                            direction: Axis.horizontal,
+                            children: seedWords
+                                .map((e) => Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(2, 1, 2, 1),
+                                      child: FlatButton(
+                                          onPressed: () {},
+                                          child: Column(children: [
+                                            Text(
+                                              (seedWords.indexOf(e) + 1)
+                                                      .toString() +
+                                                  "-" +
+                                                  e,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                wordSpacing: 1,
+                                              ),
+                                            ),
+                                          ])),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                      color: Color.fromRGBO(191, 144, 0, 1),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                      child: Center(
+                          child: Text(
+                        'Please secure your password phrase of the 12 words above before proceeding.\nKeep them safe from access by thrid party.If you IGNORE this, You can LOSE all assets from your wallet',
+                        style: TextStyle(
+                            color: Color.fromRGBO(191, 144, 0, 1),
+                            fontSize: 15),
+                        textAlign: TextAlign.center,
+                      )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 5),
+                      child: FlatButton(
+                        color: Color.fromRGBO(191, 144, 0, 1),
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                              context, '/word_seed_check_screen');
+                        },
+                        child: Text('Next & Proceed'),
+                      ),
+                    ),
+                  ],
                 )),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                child: FlatButton(
-                  color: Color.fromRGBO(191, 144, 0, 1),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, '/word_seed_check_screen');
-                  },
-                  child: Text('Next & Proceed'),
-                ),
-              ),
-            ],
-          )),
-        ),
-      ),
-      backgroundColor: Color.fromARGB(0, 0, 0, 0),
-    );
+            ),
+            backgroundColor: Color.fromARGB(0, 0, 0, 0),
+          );
   }
 
   void setHDWallet() {
     setState(() {
-      isLoaded=false;
+      isLoaded = false;
     });
-    String seedWord=Web3.generateMnemonic();
+    String seedWord = Web3.generateMnemonic();
     setState(() {
-      seedWords=seedWord.split(' ');
-      isLoaded=true;
+      seedWords = seedWord.split(' ');
+      isLoaded = true;
     });
-
   }
 }
 
@@ -431,20 +429,19 @@ class _WordSeedCheckScreenState extends State<WordSeedCheckScreen> {
                   color: Color.fromRGBO(191, 144, 0, 1),
                   onPressed: () {
                     setState(() async {
-                      if (seedWords.length!=12)
-                        return;
-                      String result='';
-                      for (int i=0;i<seedWords.length;i++){
-                        result+=seedWords[i]+' ';
+                      if (seedWords.length != 12) return;
+                      String result = '';
+                      for (int i = 0; i < seedWords.length; i++) {
+                        result += seedWords[i] + ' ';
                       }
                       print(result);
-                      result=Web3.privateKeyFromMnemonic(result);
+                      result = Web3.privateKeyFromMnemonic(result);
                       Credentials fromHex = EthPrivateKey.fromHex(result);
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       prefs.setString('key', result);
-                      Navigator.pushReplacementNamed(context, '/home',arguments: {
-                        'key':result
-                      });
+                      Navigator.pushReplacementNamed(context, '/home',
+                          arguments: {'key': result});
                     });
                   },
                   child: Text('Next & Proceed'),
@@ -535,8 +532,8 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                                       width: 150,
                                                       child: Padding(
                                                         padding:
-                                                            EdgeInsets
-                                                                .fromLTRB(10, 5, 0, 5),
+                                                            EdgeInsets.fromLTRB(
+                                                                10, 5, 0, 5),
                                                         child: TextField(
                                                           keyboardType:
                                                               TextInputType
@@ -579,12 +576,15 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                                       ),
                                                     ),
                                                     Image(
-                                                      width: !isGoldTop?40:50,
-                                                        image:AssetImage(!isGoldTop?'assets/images/tether.png':'assets/images/1irstgold.png')
-                                                    )
-                                                    ,Text(
-                                                        !isGoldTop?'Tether':'1Gold'
-                                                    )
+                                                        width: !isGoldTop
+                                                            ? 40
+                                                            : 50,
+                                                        image: AssetImage(!isGoldTop
+                                                            ? 'assets/images/tether.png'
+                                                            : 'assets/images/1irstgold.png')),
+                                                    Text(!isGoldTop
+                                                        ? 'Tether'
+                                                        : '1Gold')
                                                   ],
                                                 ),
                                               ),
@@ -653,27 +653,29 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                                                 .text);
                                                       }),
                                                       decoration: new InputDecoration
-                                                          .collapsed(
+                                                              .collapsed(
                                                           hintText: isGoldTop
                                                               ? 'Enter 1IristGold'
                                                               : 'Enter Tether USD',
-                                                          fillColor: Color
-                                                              .fromRGBO(
-                                                              191,
-                                                              144,
-                                                              0,
-                                                              1)),
+                                                          fillColor:
+                                                              Color.fromRGBO(
+                                                                  191,
+                                                                  144,
+                                                                  0,
+                                                                  1)),
                                                       controller:
                                                           bottomEditText,
                                                     ),
                                                   ),
                                                   Image(
-                                                    width: isGoldTop?40:50,
-                                                    image:AssetImage(isGoldTop?'assets/images/tether.png':'assets/images/1goldsmall.png')
-                                                  )
-                                                  ,Text(
-                                                      isGoldTop?'Tether':'1Gold'
-                                                  )
+                                                      width:
+                                                          isGoldTop ? 40 : 50,
+                                                      image: AssetImage(isGoldTop
+                                                          ? 'assets/images/tether.png'
+                                                          : 'assets/images/1goldsmall.png')),
+                                                  Text(isGoldTop
+                                                      ? 'Tether'
+                                                      : '1Gold')
                                                 ],
                                               ),
                                             ),
@@ -794,10 +796,71 @@ class _ConversionScreenState extends State<ConversionScreen> {
                 parsed['data']['quote']['USDT']['price'].toString();
           }
         }
-
       }
       isLoading = false;
       print("loading" + isLoading.toString());
     });
+  }
+}
+
+class AboutScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    'Legal & Imprint',
+                    style: TextStyle(
+                        color: Color.fromRGBO(191, 144, 0, 1),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Image(
+                    width: 250,
+                    height: 200,
+                    image: AssetImage('assets/images/1irstgold.png'),
+                  ),
+                ),
+              ],
+            ),
+//            SizedBox(height: 20.0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+              child: Center(
+                  child: Text(
+                'The use of this application is at the user\'s  own expense and on his own responsibility in all legal matters, whether for loss or for incorrect technical operation of the application. The entire functions of the application are decentralized from peer to peer. We ourselves do not store any data and we do not carry out any financial services.We only ensure the functionality of this decentralized application.',
+                style: TextStyle(
+                    color: Color.fromRGBO(191, 144, 0, 1),
+                    fontSize: 15),
+                textAlign: TextAlign.center,
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Development & Technical Support\n 1irstcoin LLC./nFree Industrial Zone\n Company ID: 404565029\n Avtomshenebeli 88\n4600 Kutaissi\n Republic of Georgia\nhttps://www.1irstgold.com\nSupport & Customer Hotline\nEmail: support@1irstgold.com",
+                  style: TextStyle(color: Color.fromRGBO(191, 144, 0, 1), fontSize: 15,
+                ),
+              ),
+              ),
+            )
+          ],
+        )),
+      ),
+      backgroundColor: Color.fromARGB(0, 0, 0, 0),
+    );
   }
 }
