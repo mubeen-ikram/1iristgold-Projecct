@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:expandable/expandable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet_core/wallet_core.dart';
 
 void main() => runApp(MaterialApp(initialRoute: '/', routes: {
-      '/': (context) => AboutScreen(),
+      '/': (context) => WelcomeScreen(),
       '/welcome_screen': (context) => WelcomeScreen(),
       '/home': (context) => MyHomeScreen(),
       '/register_welcome_screen': (context) => RegisterWelcomeScreen(),
@@ -18,6 +19,7 @@ void main() => runApp(MaterialApp(initialRoute: '/', routes: {
       '/word_seed_show_screen': (context) => WordSeedShowScreen(),
       '/conversion_screen': (context) => ConversionScreen(),
       '/about_screen': (context) => AboutScreen(),
+      '/faq_screen': (context) => FaqScreen(),
     }));
 
 class MyHomeScreen extends StatefulWidget {
@@ -841,8 +843,7 @@ class AboutScreen extends StatelessWidget {
                   child: Text(
                 'The use of this application is at the user\'s  own expense and on his own responsibility in all legal matters, whether for loss or for incorrect technical operation of the application. The entire functions of the application are decentralized from peer to peer. We ourselves do not store any data and we do not carry out any financial services.We only ensure the functionality of this decentralized application.',
                 style: TextStyle(
-                    color: Color.fromRGBO(191, 144, 0, 1),
-                    fontSize: 15),
+                    color: Color.fromRGBO(191, 144, 0, 1), fontSize: 15),
                 textAlign: TextAlign.center,
               )),
             ),
@@ -852,15 +853,121 @@ class AboutScreen extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Text(
                   "Development & Technical Support\n 1irstcoin LLC./nFree Industrial Zone\n Company ID: 404565029\n Avtomshenebeli 88\n4600 Kutaissi\n Republic of Georgia\nhttps://www.1irstgold.com\nSupport & Customer Hotline\nEmail: support@1irstgold.com",
-                  style: TextStyle(color: Color.fromRGBO(191, 144, 0, 1), fontSize: 15,
+                  style: TextStyle(
+                    color: Color.fromRGBO(191, 144, 0, 1),
+                    fontSize: 15,
+                  ),
                 ),
-              ),
               ),
             )
           ],
         )),
       ),
       backgroundColor: Color.fromARGB(0, 0, 0, 0),
+    );
+  }
+}
+
+class FaqQuestion {
+  String header, body;
+
+  FaqQuestion({this.header, this.body});
+}
+
+class FaqScreen extends StatelessWidget {
+  List<FaqQuestion> question = [
+    FaqQuestion(
+        header: "What is a 1irstgold token?",
+        body:
+            "The 1irstgold token can be used as a payment utility token. The value of the 1irstgold token is based on the guideline of a gram of pure gold. The reference price of the 1irstgold token is based on the price of Xetra Gold with the security code number DE000A0S9GB0. The token holder is entitled to exchange his token for one gram of physical gold upon return. The owner is solely responsible for the safekeeping of his token. In the event of theft or loss of the storage medium chosen by the owner, any liability will be refused."),
+    FaqQuestion(
+        header: "How much cost the service of the deposit?",
+        body:
+            "The servicecost are fixxed at 0.765 euros per token and per gram of gold. The service charges will be charged to the owner upon issuance of the equivalent value in crypto or FIAT currency or in physical form."),
+    FaqQuestion(
+        header: "Over what period of time will the service be provided?",
+        body:
+            "The service is provided for an indefinite period and ends with the return of the token."),
+    FaqQuestion(
+        header: "How can I get or buy the 1irstgold token?",
+        body:
+            "First, every purchaser needs a so-called wallet, which is compatible with Ethereum and ERC 20 standard. We recommend the use of a Wallet Trust brand. The wallet is free of charge. A carryover of tokens to other wallets is marginally in the cent range, so custody of gold in this form is very attractive. You can purchase the token yourself by clicking on the purchase button on our website, or by exercising our VIP service for a purchase volume of at least € 25,000.00. We accept payment with crypto-currency of the genera Bitcoin and Ethereum for the purchase of our 1irstgold tokens."),
+    FaqQuestion(
+        header: "How does a purchase work in practice?",
+        body:
+            "1. You search the order area in our system and operate the order module according to your investment criteria.\n2. After your order has been paid, the purchased amount of GOLD tokens will be added to your wallet. As a rule, the entire process takes only a few minutes.\n3. From the possession of 100 GOLD tokens You can always exchange your physical gold stock for the cost of 0.765 Euro plus shipping costs. If you own less than 100 GOLD, you can exchange them for different FIAT and cryptocurrencies at any time."),
+    FaqQuestion(
+        header: "How fast can I trade my tokens for physical gold?",
+        body:
+            "A physical gold trade will be made within 72 hours of delivery. Each purchase leaves a transaction reference on the Ethereum Blockchain. This transaction is permanently stored and anonymous. This means that safekeeping of your tokens is up to you alone. We assume no liability. Any holder of a token may redeem this token by returning it to the Main Wallet of our Company for the issuance of physical gold or equivalents of FIAT and cryptocurrencies. The return notification will be emailed to us, backed by the copy of the transaction reference of returning the token to our main wallet. Thus, the identification is guaranteed with absolute certainty."),
+    FaqQuestion(
+        header: "Which price is determined at the time of purchase?",
+        body:
+            "When purchasing, only the factor of timely payment is decisive. The order / purchase form here on the website expresses interest in the purchase. A binding contract only comes into effect upon receipt and settlement of the purchase price debt. The receipt is recorded and proven by us by proof of the exact time of the purchase price. The acquirer will be notified via email. At the same time, our settlement system will create a reference email which the acquirer will use for the purpose of his care. As an example, the customer’s cash receipt will be on 2.01.2019 at 3.40 pm. This results in the following reference: 020120191540@1irstgold.com The reference email serves the purpose of subsequent redemption, payment and settlement, which secures the transaction and on top of that provides a unique signature. The reference e-mail is available to the purchaser for the purpose of anonymous communication with us. The access data are transmitted to the purchaser after purchase price entrance to his order."),
+    FaqQuestion(
+        header: "Which course is set at the time of sale?",
+        body:
+            "The time of receipt of the reference e-mail with the corresponding conversion and revenue request is decisive for determining the price."),
+    FaqQuestion(
+        header: "Which reference rates apply?",
+        body:
+            "For the gold reference price, the quote is accepted via Tradingsview on our website. The course is valid for the purchase and sale case. The same applies to cryptocurrencies and FIAT exchange rates."),
+    FaqQuestion(
+        header: "What risks do I take?",
+        body:
+            "If you use the recommended Trust Wallet, you minimize your risk of loss in case of theft or loss of your chosen storage medium to almost zero. The Trust Wallet can be alerted and launched at any time using the security criteria and passwords on a new medium. Your tokens remain in your wallet as long as you follow the recommendations and guidelines. We assume no liability for improper storage of your tokens. A total loss can not be ruled out."),
+    FaqQuestion(
+        header: "What does limitless mean?",
+        body:
+            "If you want to transport gold in excess of 10,000 euros across borders, these values are subject to declaration. The safekeeping in a wallet does not reveal this, because the online account of your bank account also takes you across borders. We guarantee a replacement of our tokens currently in Switzerland, Austria, Netherlands, Belgium, Luxembourg and in Germany in physical form within 72 hours."),
+    FaqQuestion(
+        header: "How much tax is due on a win?",
+        body:
+            "If the holding period exceeds one year, any price gain is 100% tax-free."),
+    FaqQuestion(
+        header:
+            "Is there a minimum amount for tokens to change in physical gold?",
+        body:
+            "There is a minimum amount of 100 grams of fine gold, respectively, 100 1irstgold tokens. Below this limit, only a return in FIAT currency or crypto currency is guaranteed. The smallest bar denier is set to 100 grams of fine gold."),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: question.length,
+            itemBuilder: (context, index) {
+              return Card(
+                color: Color.fromRGBO(191, 144, 0, 1),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ExpandablePanel(
+                    header: Text(question[index].header,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),),
+                    expanded: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        question[index].body,
+                        softWrap: true,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

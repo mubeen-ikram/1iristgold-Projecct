@@ -138,6 +138,7 @@ class NavigationDrawer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               onTap: (){
                 Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/faq_screen');
                 },
             ),
             ListTile(
