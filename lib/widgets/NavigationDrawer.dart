@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawer extends StatelessWidget {
 
@@ -99,8 +100,6 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, '/conversion_screen');
-
-
               },
             ),
             ListTile(
@@ -145,11 +144,21 @@ class NavigationDrawer extends StatelessWidget {
                   style: TextStyle(
                       color: Color.fromRGBO(191, 144, 0, 1),
                       fontWeight: FontWeight.bold)),
-              onTap: () => {Navigator.of(context).pop()},
+              onTap: (){
+                Navigator.of(context).pop();
+              setSharedPreferenceValue(context);
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> setSharedPreferenceValue(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('key', '');
+    Navigator.pushReplacementNamed(context, '/welcome_screen');
+
   }
 }

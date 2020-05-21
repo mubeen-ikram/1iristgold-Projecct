@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:irisgoldproject/widgets/NavigationDrawer.dart';
 import 'package:http/http.dart';
 import 'dart:math' as math;
+import 'package:bip39/bip39.dart' as bip39;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet_core/wallet_core.dart';
 
 void main() => runApp(MaterialApp(initialRoute: '/', routes: {
       '/': (context) => WelcomeScreen(),
+      '/welcome_screen': (context) => WelcomeScreen(),
       '/home': (context) => MyHomeScreen(),
       '/register_welcome_screen': (context) => RegisterWelcomeScreen(),
       '/word_seed_check_screen': (context) => WordSeedCheckScreen(),
@@ -21,6 +25,26 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
+
+  Future<void> checkPrefrence() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String counter =prefs.getString('key') ?? '';
+    print(counter);
+    if (counter==''){
+      setState(() {
+        print('going to welcome screen');
+        Navigator.pushReplacementNamed(context, '/welcome_screen');
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkPrefrence();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +59,23 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   }
 }
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
+  @override
+  _WelcomeScreenState createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkPrefrence();
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Center(
         child: Container(
@@ -85,6 +123,17 @@ class WelcomeScreen extends StatelessWidget {
       ),
       backgroundColor: Color.fromARGB(0, 0, 0, 0),
     );
+  }
+
+  Future<void> checkPrefrence() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String counter =prefs.getString('key') ?? '';
+    print(counter+"welcome");
+    if (counter!=''){
+      setState(() {
+        Navigator.pushReplacementNamed(context, '/home');
+      });
+    }
   }
 }
 
@@ -174,24 +223,26 @@ class WordSeedShowScreen extends StatefulWidget {
 }
 
 class _WordSeedShowScreenState extends State<WordSeedShowScreen> {
+  bool isLoaded=false;
   List<String> seedWords = [
-    'one',
-    'two',
-    'three',
-    'four',
-    'five',
-    'six',
-    'eight',
-    'nine',
-    'ten',
-    'seven',
-    'eleven',
-    'twelve',
+
   ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setHDWallet();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return !isLoaded? SpinKitCircle(
+      color: Colors.white,
+      size: 50.0,
+    ):
+    Scaffold(
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -201,7 +252,7 @@ class _WordSeedShowScreenState extends State<WordSeedShowScreen> {
                 alignment: Alignment.topRight,
                 child: Image(
                   width: 250,
-                  height: 140,
+                  height: 160,
                   image: AssetImage('assets/images/1irstgold.png'),
                 ),
               ),
@@ -223,7 +274,7 @@ class _WordSeedShowScreenState extends State<WordSeedShowScreen> {
                                             "-" +
                                             e,
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 15,
                                           wordSpacing: 1,
                                         ),
                                       ),
@@ -262,6 +313,18 @@ class _WordSeedShowScreenState extends State<WordSeedShowScreen> {
       ),
       backgroundColor: Color.fromARGB(0, 0, 0, 0),
     );
+  }
+
+  void setHDWallet() {
+    setState(() {
+      isLoaded=false;
+    });
+    String seedWord=Web3.generateMnemonic();
+    setState(() {
+      seedWords=seedWord.split(' ');
+      isLoaded=true;
+    });
+
   }
 }
 
@@ -367,8 +430,21 @@ class _WordSeedCheckScreenState extends State<WordSeedCheckScreen> {
                 child: FlatButton(
                   color: Color.fromRGBO(191, 144, 0, 1),
                   onPressed: () {
-                    setState(() {
-                      Navigator.pushReplacementNamed(context, '/home');
+                    setState(() async {
+                      if (seedWords.length!=12)
+                        return;
+                      String result='';
+                      for (int i=0;i<seedWords.length;i++){
+                        result+=seedWords[i]+' ';
+                      }
+                      print(result);
+                      result=Web3.privateKeyFromMnemonic(result);
+                      Credentials fromHex = EthPrivateKey.fromHex(result);
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setString('key', result);
+                      Navigator.pushReplacementNamed(context, '/home',arguments: {
+                        'key':result
+                      });
                     });
                   },
                   child: Text('Next & Proceed'),
