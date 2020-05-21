@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:link/link.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawer extends StatelessWidget {
-
-
   NavigationDrawer();
 
   @override
@@ -40,8 +39,8 @@ class NavigationDrawer extends StatelessWidget {
                   child: FlatButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(
-                            color: Color.fromRGBO(191, 144, 0, 1))),
+                        side:
+                            BorderSide(color: Color.fromRGBO(191, 144, 0, 1))),
                     onPressed: () {},
                     child: Row(
                       children: <Widget>[
@@ -49,10 +48,13 @@ class NavigationDrawer extends StatelessWidget {
                           Icons.call_made,
                           color: Color.fromRGBO(191, 144, 0, 1),
                         ),
-                        Text("Send",
-                            style: TextStyle(
-                                color: Color.fromRGBO(191, 144, 0, 1),
-                                fontWeight: FontWeight.bold)),
+                        Link(
+                          url: 'https://1irstgold.com/order-buy/',
+                          child: Text("Buy",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(191, 144, 0, 1),
+                                  fontWeight: FontWeight.bold)),
+                        ),
                       ],
                     ),
                   ),
@@ -68,7 +70,7 @@ class NavigationDrawer extends StatelessWidget {
                         Icons.call_received,
                         color: Color.fromRGBO(191, 144, 0, 1),
                       ),
-                      Text("Recieve",
+                      Text("Sell",
                           style: TextStyle(
                               color: Color.fromRGBO(191, 144, 0, 1),
                               fontWeight: FontWeight.bold)),
@@ -107,10 +109,13 @@ class NavigationDrawer extends StatelessWidget {
                 Icons.show_chart,
                 color: Color.fromRGBO(191, 144, 0, 1),
               ),
-              title: Text('Price Chart',
-                  style: TextStyle(
-                      color: Color.fromRGBO(191, 144, 0, 1),
-                      fontWeight: FontWeight.bold)),
+              title: Link(
+                url: "https://1irstgold.com/1irstgold/",
+                child: Text('Price Chart',
+                    style: TextStyle(
+                        color: Color.fromRGBO(191, 144, 0, 1),
+                        fontWeight: FontWeight.bold)),
+              ),
               onTap: () => {Navigator.of(context).pop()},
             ),
             ListTile(
@@ -125,7 +130,7 @@ class NavigationDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, '/about_screen');
-                },
+              },
             ),
             ListTile(
               leading: Icon(
@@ -136,10 +141,10 @@ class NavigationDrawer extends StatelessWidget {
                   style: TextStyle(
                       color: Color.fromRGBO(191, 144, 0, 1),
                       fontWeight: FontWeight.bold)),
-              onTap: (){
+              onTap: () {
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, '/faq_screen');
-                },
+              },
             ),
             ListTile(
               leading: Icon(
@@ -150,9 +155,9 @@ class NavigationDrawer extends StatelessWidget {
                   style: TextStyle(
                       color: Color.fromRGBO(191, 144, 0, 1),
                       fontWeight: FontWeight.bold)),
-              onTap: (){
+              onTap: () {
                 Navigator.of(context).pop();
-              setSharedPreferenceValue(context);
+                setSharedPreferenceValue(context);
               },
             ),
           ],
@@ -165,6 +170,5 @@ class NavigationDrawer extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('key', '');
     Navigator.pushReplacementNamed(context, '/welcome_screen');
-
   }
 }

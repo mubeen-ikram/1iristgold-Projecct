@@ -51,10 +51,21 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     return Scaffold(
       drawer: NavigationDrawer(),
       appBar: AppBar(
-        title: Text('Side menu'),
+        backgroundColor: Colors.black,
+        title: Text('1IrstGOld',
+        style: TextStyle(
+          color: Color.fromRGBO(191, 144, 0, 1)
+        ),),
       ),
-      body: Center(
-        child: Text('Side Menu Tutorial'),
+      body: Container(
+        color: Colors.black,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text('1IrstMenu Menu'),
+            ],
+          ),
+        ),
       ),
     );
   }
