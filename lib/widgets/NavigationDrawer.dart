@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:link/link.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavigationDrawer extends StatelessWidget {
   NavigationDrawer();
@@ -41,20 +41,24 @@ class NavigationDrawer extends StatelessWidget {
                         borderRadius: BorderRadius.circular(18.0),
                         side:
                             BorderSide(color: Color.fromRGBO(191, 144, 0, 1))),
-                    onPressed: () {},
+                    onPressed: () async {
+                      const url = 'https://1irstgold.com/order-buy/';
+                      if (await canLaunch(url) != null) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
                     child: Row(
                       children: <Widget>[
                         Icon(
                           Icons.call_made,
                           color: Color.fromRGBO(191, 144, 0, 1),
                         ),
-                        Link(
-                          url: 'https://1irstgold.com/order-buy/',
-                          child: Text("Buy",
-                              style: TextStyle(
-                                  color: Color.fromRGBO(191, 144, 0, 1),
-                                  fontWeight: FontWeight.bold)),
-                        ),
+                        Text("Buy",
+                            style: TextStyle(
+                                color: Color.fromRGBO(191, 144, 0, 1),
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
@@ -109,14 +113,19 @@ class NavigationDrawer extends StatelessWidget {
                 Icons.show_chart,
                 color: Color.fromRGBO(191, 144, 0, 1),
               ),
-              title: Link(
-                url: "https://1irstgold.com/1irstgold/",
-                child: Text('Price Chart',
-                    style: TextStyle(
-                        color: Color.fromRGBO(191, 144, 0, 1),
-                        fontWeight: FontWeight.bold)),
-              ),
-              onTap: () => {Navigator.of(context).pop()},
+              title: Text('Price Chart',
+                  style: TextStyle(
+                      color: Color.fromRGBO(191, 144, 0, 1),
+                      fontWeight: FontWeight.bold)),
+              onTap: () async {
+                Navigator.of(context).pop();
+                const url = 'https://coinmarketcap.com/currencies/1irstgold/';
+                if (await canLaunch(url) != null) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
             ),
             ListTile(
               leading: Icon(

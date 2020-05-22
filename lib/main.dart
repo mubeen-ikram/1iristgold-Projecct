@@ -52,7 +52,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       drawer: NavigationDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('1IrstGOld',
+        title: Text('1IrstGold App',
         style: TextStyle(
           color: Color.fromRGBO(191, 144, 0, 1)
         ),),
